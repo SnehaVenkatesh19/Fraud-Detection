@@ -1,38 +1,36 @@
 # Credit Card Fraud Detection System
 
 ## Project Overview
-This project focuses on building a **fraud detection pipeline** using the popular Kaggle [Credit Card Fraud Detection dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud). Fraud detection is a core challenge in fintech, where the cost of missed fraud is very high, but excessive false alarms can damage customer trust.  
+This project builds a **fraud detection pipeline** using the Kaggle [Credit Card Fraud Detection dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud).  
+Fraud detection is a critical challenge in fintech: missing fraud is costly, but too many false alarms hurt customer experience.  
 
-The dataset contains **284,807 transactions** with only **492 fraud cases (0.17%)**, making it highly imbalanced.  
+The dataset has **284,807 transactions** with only **492 frauds (0.17%)** → highly imbalanced.  
 
-The goal: **develop models that maximize fraud detection (recall) while minimizing false alarms (precision)**.  
+Goal: **maximize fraud detection (recall) while minimizing false positives (precision)**.  
 
 ---
 
 ##  Workflow
 1. **Data Preprocessing**
-   - Scaled raw features `Time` and `Amount` using `StandardScaler`.  
-   - Kept anonymized PCA features `V1–V28` as-is.  
-   - Stratified train-test split (80/20).  
+   - Scaled `Time` and `Amount`, left PCA features `V1–V28` as-is.
+   - Stratified train-test split.
 
 2. **Class Imbalance Handling**
-   - Tested two strategies:
-     - **SMOTE oversampling** (balanced training data).
-     - **Decision threshold tuning** (optimized cutoff probability).  
+   - **SMOTE oversampling** for balanced training data.
+   - **Decision threshold tuning** for optimal cutoffs.
 
-3. **Models Tested**
-   - Logistic Regression   
-   - Random Forest   
-   - XGBoost   
+3. **Models**
+   - Logistic Regression 
+   - Random Forest 
+   - XGBoost 
 
-4. **Evaluation Metrics**
-   - Precision, Recall, F1-score (for fraud class).  
-   - ROC AUC and PR AUC (better for imbalanced data).  
-   - Confusion matrices to understand false positives/negatives.  
+4. **Evaluation**
+   - Precision, Recall, F1, ROC AUC, PR AUC.
+   - Confusion matrices for error analysis.
 
 ---
 
-## Results
+##  Results
 
 | Model                   | Precision (Fraud) | Recall (Fraud) | F1 (Fraud) | PR AUC | Notes |
 |--------------------------|------------------|----------------|------------|--------|-------|
@@ -44,28 +42,48 @@ The goal: **develop models that maximize fraud detection (recall) while minimizi
 
 ---
 
-## Key Insights
-- **Class imbalance handling matters**: SMOTE improved Random Forest but not Logistic Regression.  
-- **Threshold tuning is powerful**: adjusting cutoff improved F1 and reduced false positives.  
-- **XGBoost was the best performer**:  
-  - Achieved **91% precision** and **82% recall**.  
-  - Only **8 false positives** out of ~57k legit transactions.  
-  - Excellent balance between catching fraud and minimizing customer disruption.  
+##  Visuals
+
+### Confusion Matrices
+![Confusion Matrix — Random Forest + SMOTE](figures/cm_rf_smote.png)  
+![Confusion Matrix — XGBoost (Tuned Threshold)](figures/cm_xgb_tuned.png)
+
+### Precision–Recall & ROC Curves
+![Precision–Recall Curves](figures/pr_curves.png)  
+![ROC Curves](figures/roc_curves.png)
+
+### Threshold Sweep (XGBoost)
+Choosing ~0.93 as the operating point maximized F1 score:  
+![Threshold Sweep — XGBoost](figures/threshold_sweep_xgb.png)
+
+### Explainability (SHAP)
+Feature importance and transaction-level explanations:  
+![SHAP Feature Importance — XGBoost](figures/shap_summary_bar_xgb.png)  
+![SHAP Beeswarm — XGBoost](figures/shap_beeswarm_xgb.png)  
+![SHAP Force Plot — Example Transaction](figures/shap_force_example_xgb.png)
 
 ---
 
-## Business Impact
-At the tuned threshold, the system:  
-- Detected **80+ fraudulent transactions** out of 98 in the test set.  
-- Reduced **false alarms by >99% compared to baseline Logistic Regression**.  
-- Could save thousands of dollars in prevented fraud losses with minimal impact on legitimate users.  
+##  Key Insights
+- **SMOTE improved Random Forest**, but not Logistic Regression.  
+- **Threshold tuning boosted precision** while keeping high recall.  
+- **XGBoost with tuned threshold** delivered the best balance:  
+  - 91% precision, 82% recall.  
+  - Only 8 false positives out of ~57k legit transactions.  
+
+---
+
+##  Business Impact
+- Detected **80+ fraudulent transactions** in the test set.  
+- Reduced false alarms by **>99% compared to baseline Logistic Regression**.  
+- Practical trade-off: strong fraud detection while minimizing customer friction.  
 
 ---
 
 ##  Tech Stack
 - Python, Pandas, NumPy  
 - scikit-learn, imbalanced-learn  
-- XGBoost, SHAP (explainability)  
+- XGBoost, SHAP  
 - Matplotlib, Seaborn  
 
 
