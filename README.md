@@ -56,11 +56,6 @@ Goal: **maximize fraud detection (recall) while minimizing false positives (prec
 Choosing ~0.93 as the operating point maximized F1 score:  
 ![Threshold Sweep — XGBoost](figures/threshold_sweep_xgb.png)
 
-### Explainability (SHAP)
-Feature importance and transaction-level explanations:  
-![SHAP Feature Importance — XGBoost](figures/shap_summary_bar_xgb.png)  
-![SHAP Beeswarm — XGBoost](figures/shap_beeswarm_xgb.png)  
-![SHAP Force Plot — Example Transaction](figures/shap_force_example_xgb.png)
 
 ---
 
